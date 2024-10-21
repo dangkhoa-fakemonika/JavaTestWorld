@@ -3,7 +3,6 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
-import tile.Tile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,6 +20,7 @@ public class Player extends Entity{
     String handUsed = "";
     public String[] inventory;
     public int[] inventoryCount;
+    public int facingX = 0, facingY = 0, mapX = 0, mapY = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) throws IOException {
         super(100);
@@ -30,7 +30,6 @@ public class Player extends Entity{
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
         inventory = new String[10];
         inventoryCount = new int[10];
-
 
         solidArea = new Rectangle(12, 20, (int) (gp.tileSize * 0.5), (int) (gp.tileSize * 0.5));
         solidAreaDefaultX = solidArea.x;
@@ -58,7 +57,6 @@ public class Player extends Entity{
         inventoryCount[4] = 1;
         inventory[5] = "Bush";
         inventoryCount[5] = 1;
-
 
     }
 
@@ -126,6 +124,7 @@ public class Player extends Entity{
 
         int objIndex = gp.collisionChecker.checkObject(this, true);
         pickUpObject(objIndex);
+        updateFacing();
 
         if (!collisionOn && moving){
             switch (direction){
@@ -174,13 +173,38 @@ public class Player extends Entity{
         }
     }
 
+    public void updateFacing(){
+        int newCol = (gp.player.solidArea.x + gp.player.worldX + gp.player.solidArea.width / 2);
+        int newRow = (gp.player.solidArea.y + gp.player.worldY + gp.player.solidArea.height / 2);
+        mapX = newCol;
+        mapY = newRow;
+
+        switch (gp.player.direction){
+            case "up":
+                if ((newRow / gp.tileSize) > 0) newRow -= gp.tileSize; break;
+            case "down":
+                if ((gp.worldHeight - gp.tileSize - newRow) / gp.tileSize > 0) newRow += gp.tileSize; break;
+            case "left":
+                if (newCol / gp.tileSize > 0) newCol -= gp.tileSize; break;
+            case "right":
+                if ((gp.worldWidth - gp.tileSize - newCol)/ gp.tileSize > 0) newCol += gp.tileSize; break;
+            default: break;
+        }
+
+        facingX = newCol / gp.tileSize;
+        facingY = newRow / gp.tileSize;
+    }
+
     public void handPrimary(){
         gp.tileM.breakTile();
     }
 
     public void handSecondary(){
-//        gp.tileM.placeTile();
         currentHP -= 10;
+    }
+
+    public void interact(){
+
     }
 
     public void pickUpObject(int index){

@@ -34,7 +34,6 @@ public class TileManager {
     }
 
     public void setup(int index, String imageName, boolean collision, int resistance) throws IOException {
-        UtilityTool tool = new UtilityTool();
         tiles[index] = new Tile();
         tiles[index].image = gp.assetsLoader.getTile(imageName);
         tiles[index].collision = collision;
@@ -63,48 +62,13 @@ public class TileManager {
     }
 
     public void breakTile(){
-        int newCol = (gp.player.solidArea.x + gp.player.worldX + gp.player.solidArea.width / 2);
-        int newRow = (gp.player.solidArea.y + gp.player.worldY + gp.player.solidArea.height / 2);
-        int oldCol = newCol, oldRow = newRow;
-
-        switch (gp.player.direction){
-            case "up":
-                if ((newRow / gp.tileSize) > 0) newRow -= gp.tileSize; break;
-            case "down":
-                if ((gp.worldHeight - gp.tileSize - newRow) / gp.tileSize > 0) newRow += gp.tileSize; break;
-            case "left":
-                if (newCol / gp.tileSize > 0) newCol -= gp.tileSize; break;
-            case "right":
-                if ((gp.worldWidth - gp.tileSize - newCol)/ gp.tileSize > 0) newCol += gp.tileSize; break;
-            default: break;
-        }
-
-        int oldTileCol = oldCol / gp.tileSize,
-                oldTileRow = oldRow / gp.tileSize,
-                newTileCol = newCol / gp.tileSize,
-                newTileRow = newRow / gp.tileSize;
-
-        if ((oldTileCol != newTileCol || oldTileRow != newTileRow) && mapTileNum[newTileCol][newTileRow] == 2)
-            mapTileNum[newTileCol][newTileRow] = 0;
+        if ((gp.player.mapX != gp.player.facingX || gp.player.mapY != gp.player.facingY) && mapTileNum[gp.player.facingX][gp.player.facingY] == 2)
+            mapTileNum[gp.player.facingX][gp.player.facingY] = 0;
     }
 
     public void placeTile(){
-        int newCol = (gp.player.solidArea.x + gp.player.worldX + gp.player.solidArea.width / 2) / gp.tileSize;
-        int newRow = (gp.player.solidArea.y + gp.player.worldY + gp.player.solidArea.height / 2)  / gp.tileSize;
-
-        switch (gp.player.direction){
-            case "up":
-                if (newRow > 0) newRow--; break;
-            case "down":
-                if (newRow < gp.maxWorldRow - 1) newRow++; break;
-            case "left":
-                if (newCol > 0) newCol--; break;
-            case "right":
-                if (newCol < gp.maxWorldCol - 1) newCol++; break;
-            default: break;
-        }
-
-        if (mapTileNum[newCol][newRow] != 2) mapTileNum[newCol][newRow] = 2;
+        if ((gp.player.mapX != gp.player.facingX || gp.player.mapY != gp.player.facingY) && mapTileNum[gp.player.facingX][gp.player.facingY] == 2)
+            mapTileNum[gp.player.facingX][gp.player.facingY] = 0;
     }
 
     public void draw(Graphics2D g2){
@@ -124,25 +88,7 @@ public class TileManager {
             }
         }
 
-        int newCol = (gp.player.solidArea.x + gp.player.worldX + gp.player.solidArea.width / 2);
-        int newRow = (gp.player.solidArea.y + gp.player.worldY + gp.player.solidArea.height / 2);
-
-        switch (gp.player.direction){
-            case "up":
-                if ((newRow / gp.tileSize) > 0) newRow -= gp.tileSize; break;
-            case "down":
-                if ((gp.worldHeight - gp.tileSize - newRow) / gp.tileSize > 0) newRow += gp.tileSize; break;
-            case "left":
-                if (newCol / gp.tileSize > 0) newCol -= gp.tileSize; break;
-            case "right":
-                if ((gp.worldWidth - gp.tileSize - newCol)/ gp.tileSize > 0) newCol += gp.tileSize; break;
-            default: break;
-        }
-
-        int tileCol = newCol / gp.tileSize;
-        int tileRow = newRow / gp.tileSize;
-
-        g2.drawRect(tileCol * gp.tileSize - gp.player.worldX + gp.player.screenX, tileRow * gp.tileSize - gp.player.worldY + gp.player.screenY, gp.tileSize, gp.tileSize);
+        g2.drawRect(gp.player.facingX * gp.tileSize - gp.player.worldX + gp.player.screenX, gp.player.facingY * gp.tileSize - gp.player.worldY + gp.player.screenY, gp.tileSize, gp.tileSize);
 
     }
 }

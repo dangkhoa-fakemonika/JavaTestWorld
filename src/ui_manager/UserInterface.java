@@ -1,16 +1,13 @@
-package main;
+package ui_manager;
 
-import item.Item;
+import main.GamePanel;
+import main.UtilityTool;
 import object.subobject.OBJ_Coin;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Objects;
 
 public class UserInterface {
@@ -28,6 +25,9 @@ public class UserInterface {
     public String message = "";
     int msgCounter = 0;
     UtilityTool tool;
+
+//    boolean openInventory = false;
+//    boolean openInteractiveUI = false;
 
     public UserInterface(GamePanel gp) throws IOException, FontFormatException {
         this.gp = gp;
@@ -53,7 +53,12 @@ public class UserInterface {
     }
 
     public void draw(Graphics2D g2){
-        drawGameUI(g2);
+        if (gp.keyH.inventoryPressed){
+            drawInventoryUI(g2);
+        }
+        else {
+            drawGameUI(g2);
+        }
     }
 
     public void drawGameUI(Graphics2D g2){
@@ -82,15 +87,27 @@ public class UserInterface {
     }
 
     public void drawCraftingUI(Graphics2D g2){
-        
+        g2.setColor(Color.green);
+        g2.fillRect(200, 200, 200, 200);
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(30F));
+        g2.drawString("Crafting Placeholder", 300, 300);
     }
 
     public void drawChestUI(Graphics2D g2){
-
+        g2.setColor(Color.green);
+        g2.fillRect(200, 200, 200, 200);
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(30F));
+        g2.drawString("Chest Placeholder", 300, 300);
     }
 
     public void drawInventoryUI(Graphics2D g2){
-
+        g2.setColor(Color.green);
+        g2.fillRect(200, 200, 200, 200);
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(30F));
+        g2.drawString("Inventory Placeholder", 300, 300);
     }
 }
 

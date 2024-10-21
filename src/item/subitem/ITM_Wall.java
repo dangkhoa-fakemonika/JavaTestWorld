@@ -7,6 +7,6 @@ public class ITM_Wall extends Blocks {
     public ITM_Wall(GamePanel gp) {
 
         super.itemName = "Wall";
-        image = gp.assetsLoader.getItem("wall");
+        image = gp.assetsLoader.getItem("wall_item");
     }
 }

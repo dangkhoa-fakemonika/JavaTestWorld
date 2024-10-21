@@ -5,6 +5,7 @@ import item.ItemHandler;
 import loader.AssetsLoader;
 import object.SuperObject;
 import tile.TileManager;
+import ui_manager.UserInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int worldWidth = maxWorldCol * tileSize;
     public final int worldHeight = maxWorldRow * tileSize;
 
-    KeyHandler keyH = new KeyHandler();
+    public KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public Sound sound = new Sound();
     public AssetsLoader assetsLoader = new AssetsLoader(this);

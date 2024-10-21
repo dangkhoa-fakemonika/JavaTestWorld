@@ -8,9 +8,12 @@ public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean rightTool, leftTool, shifted;
+    boolean UI_toggle = false;
+    public boolean inventoryPressed, utilityPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
+
     }
 
     @Override
@@ -42,6 +45,11 @@ public class KeyHandler implements KeyListener {
             shifted = true;
         }
 
+        if (code == KeyEvent.VK_E && !UI_toggle){
+            inventoryPressed = !inventoryPressed;
+            UI_toggle = true;
+        }
+
     }
 
     @Override
@@ -71,6 +79,10 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_SHIFT){
             shifted = false;
+        }
+
+        if (code == KeyEvent.VK_E){
+            UI_toggle = false;
         }
     }
 }
