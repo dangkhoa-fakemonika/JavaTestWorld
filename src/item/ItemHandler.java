@@ -22,56 +22,6 @@ public class ItemHandler {
         items[5] = new ITM_Bush(gp);
     }
 
-    public void addItem(String itemName){
-        switch (itemName){
-            case "Coins":
-                if (gp.player.inventoryCount[1] == 0){
-                    gp.player.inventoryCount[1] = 1;
-                }
-                else if (gp.player.inventoryCount[1] < items[1].stackLimit){
-                    gp.player.inventoryCount[1]++;
-                }
-                break;
-            case "Rocks":
-                if (gp.player.inventoryCount[2] == 0){
-                    gp.player.inventoryCount[2] = 1;
-                }
-                else if (gp.player.inventoryCount[2] < items[2].stackLimit){
-                    gp.player.inventoryCount[2]++;
-                }
-                break;
-            case "Sticks":
-                if (gp.player.inventoryCount[3] == 0){
-                    gp.player.inventoryCount[3] = 1;
-                }
-                else if (gp.player.inventoryCount[3] < items[3].stackLimit){
-                    gp.player.inventoryCount[3]++;
-                }
-                break;
-            case "Wall":
-                if (gp.player.inventoryCount[4] == 0){
-                    gp.player.inventoryCount[4] = 1;
-                }
-                else if (gp.player.inventoryCount[4] < items[4].stackLimit){
-                    gp.player.inventoryCount[4]++;
-                }
-                break;
-            case "Bush":
-                if (gp.player.inventoryCount[5] == 0){
-                    gp.player.inventoryCount[5] = 1;
-                }
-                else if (gp.player.inventoryCount[5] < items[5].stackLimit){
-                    gp.player.inventoryCount[5]++;
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void removeItem(String itemName){
-
-    }
 
     public BufferedImage getItemImage(String itemName){
         return switch (itemName) {

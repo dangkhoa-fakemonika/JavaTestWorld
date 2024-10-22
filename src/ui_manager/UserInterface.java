@@ -53,17 +53,11 @@ public class UserInterface {
     }
 
     public void draw(Graphics2D g2){
-        if (Objects.equals(gp.player.UIOpen, "inventory")){
-            drawInventoryUI(g2);
-        }
-        else if (Objects.equals(gp.player.UIOpen, "crafting")){
-            drawCraftingUI(g2);
-        }
-        else if (Objects.equals(gp.player.UIOpen, "box")){
-            drawChestUI(g2);
-        }
-        else {
-            drawGameUI(g2);
+        switch (gp.player.UIOpen) {
+            case "inventory" -> drawInventoryUI(g2);
+            case "crafting" -> drawCraftingUI(g2);
+            case "box" -> drawChestUI(g2);
+            case null, default -> drawGameUI(g2);
         }
     }
 
@@ -80,9 +74,9 @@ public class UserInterface {
             }
         }
 
-        for (int i = 0; i < gp.player.inventoryCount.length; i++){
-            if (gp.player.inventoryCount[i] > 0){
-                g2.drawImage(gp.itemHandler.getItemImage(gp.player.inventory[i]), (int)(gp.tileSize * (gp.maxScreenCol - 1.5 - (1 - (i % 2))* 0.5)), (int)(gp.tileSize * (i + 0.5)*0.6) , null);
+        for (int i = 0; i < 10; i++){
+            if (gp.player.inventory.itemCount[i] > 0){
+                g2.drawImage(gp.player.inventory.items[i].image, (int)(gp.tileSize * (gp.maxScreenCol - 1.5 - (1 - (i % 2))* 0.5)), (int)(gp.tileSize * (i + 0.5)*0.6) , null);
             }
         }
 
@@ -93,11 +87,8 @@ public class UserInterface {
     }
 
     public void drawCraftingUI(Graphics2D g2){
-        g2.setColor(Color.green);
-        g2.fillRect(200, 200, 200, 200);
-        g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(30F));
-        g2.drawString("Crafting Placeholder", 300, 300);
+        g2.drawImage(gp.assetsLoader.getWindow("crafting"), 96, 96, null);
+        CraftingDesk craftingDesk = new CraftingDesk(gp);
     }
 
     public void drawChestUI(Graphics2D g2){

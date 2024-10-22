@@ -17,6 +17,7 @@ public class AssetsLoader {
     String[] tileNames = {"floor", "water", "wall", "grass", "bush"};
     String[] itemNames = {"pickaxe", "coin_item", "rock", "wood", "wall_item", "bush_item"};
     String[] objectNames = {"box", "coin", "gate", "crafting_desk"};
+    String[] windowNames = {"crafting_board"};
 
     public AssetsLoader(GamePanel gp) throws IOException {
         this.gp = gp;
@@ -39,6 +40,12 @@ public class AssetsLoader {
                 objects[index] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/" + objectNames[index] + ".png")));
                 objects[index] = tool.scaleImage(objects[index], gp.tileSize, gp.tileSize);
             }
+
+            for (int index = 0; index < windowNames.length; index++){
+                windows[index] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/ui/" + windowNames[index] + ".png")));
+                windows[index] = tool.scaleImage(windows[index], gp.tileSize* 12, gp.tileSize * 9);
+            }
+
         } catch (IOException e){
             throw new IOException();
         }
@@ -74,6 +81,13 @@ public class AssetsLoader {
             case "gate" -> objects[2];
             case "crafting_desk" -> objects[3];
             default -> objects[0];
+        };
+    }
+
+    public  BufferedImage getWindow(String windowName){
+        return switch (windowName){
+            case "crafting" -> windows[0];
+            default ->  windows[0];
         };
     }
 }

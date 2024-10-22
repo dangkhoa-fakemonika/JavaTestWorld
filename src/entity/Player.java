@@ -1,7 +1,8 @@
 package entity;
 
+import item.InventoryClass;
 import main.GamePanel;
-import main.KeyHandler;
+import handlers.KeyHandler;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
@@ -15,11 +16,10 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
     public final int screenX, screenY;
-    int handCooldown = 30, handCounter = 0;
+    int handCooldown = 10, handCounter = 0;
     boolean useHand = false;
     String handUsed = "";
-    public String[] inventory;
-    public int[] inventoryCount;
+    public InventoryClass inventory;
     public int facingX = 0, facingY = 0, mapX = 0, mapY = 0;
 
     public String UIOpen = "";
@@ -31,8 +31,6 @@ public class Player extends Entity{
         this.keyH = keyH;
         screenX = gp.screenWidth/ 2 - gp.tileSize / 2;
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
-        inventory = new String[10];
-        inventoryCount = new int[10];
 
         solidArea = new Rectangle(12, 20, (int) (gp.tileSize * 0.5), (int) (gp.tileSize * 0.5));
         solidAreaDefaultX = solidArea.x;
@@ -46,21 +44,8 @@ public class Player extends Entity{
         worldX = gp.tileSize * 5;
         worldY = gp.tileSize * 6;
         speed = 8;
+        inventory = new InventoryClass(gp);
         direction = "down";
-
-        inventory[0] = "Pickaxe";
-        inventoryCount[0] = 1;
-        inventory[1] = "Coins";
-        inventoryCount[1] = 1;
-        inventory[2] = "Rocks";
-        inventoryCount[2] = 1;
-        inventory[3] = "Sticks";
-        inventoryCount[3] = 1;
-        inventory[4] = "Wall";
-        inventoryCount[4] = 1;
-        inventory[5] = "Bush";
-        inventoryCount[5] = 1;
-
     }
 
     public void getPlayerImage() throws IOException {
@@ -90,36 +75,38 @@ public class Player extends Entity{
     public void update() throws Exception {
         boolean moving = false;
 
-        if (keyH.upPressed){
-            direction = "up";
-            moving = true;
-        }
-        else if (keyH.downPressed){
-            direction = "down";
-            moving = true;
-        }
+        if (Objects.equals(UIOpen, "")){
+            if (keyH.upPressed){
+                direction = "up";
+                moving = true;
+            }
+            else if (keyH.downPressed){
+                direction = "down";
+                moving = true;
+            }
 
-        if (keyH.leftPressed){
-            direction = "left";
-            moving = true;
-        }
-        else if (keyH.rightPressed){
-            direction = "right";
-            moving = true;
-        }
+            if (keyH.leftPressed){
+                direction = "left";
+                moving = true;
+            }
+            else if (keyH.rightPressed){
+                direction = "right";
+                moving = true;
+            }
 
-        if (keyH.shifted){
-            moving = false;
-        }
+            if (keyH.shifted){
+                moving = false;
+            }
 
-        if (keyH.leftTool && !useHand){
-            handSecondary();
-            useHand = true;
-        }
+            if (keyH.leftTool && !useHand){
+                handSecondary();
+                useHand = true;
+            }
 
-        else if (keyH.rightTool && !useHand){
-            handPrimary();
-            useHand = true;
+            else if (keyH.rightTool && !useHand){
+                handPrimary();
+                useHand = true;
+            }
         }
 
         collisionOn = false;
