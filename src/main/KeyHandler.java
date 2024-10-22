@@ -45,8 +45,19 @@ public class KeyHandler implements KeyListener {
             shifted = true;
         }
 
-        if (code == KeyEvent.VK_E && !UI_toggle){
+        if (code == KeyEvent.VK_E && !UI_toggle && !utilityPressed){
             inventoryPressed = !inventoryPressed;
+            UI_toggle = true;
+        }
+
+        if (code == KeyEvent.VK_Q && !UI_toggle && !inventoryPressed){
+            utilityPressed = !utilityPressed;
+            UI_toggle = true;
+        }
+
+        if (code == KeyEvent.VK_ESCAPE){
+            inventoryPressed = false;
+            utilityPressed = false;
             UI_toggle = true;
         }
 
@@ -82,6 +93,14 @@ public class KeyHandler implements KeyListener {
         }
 
         if (code == KeyEvent.VK_E){
+            UI_toggle = false;
+        }
+
+        if (code == KeyEvent.VK_Q){
+            UI_toggle = false;
+        }
+
+        if (code == KeyEvent.VK_ESCAPE){
             UI_toggle = false;
         }
     }

@@ -53,8 +53,14 @@ public class UserInterface {
     }
 
     public void draw(Graphics2D g2){
-        if (gp.keyH.inventoryPressed){
+        if (Objects.equals(gp.player.UIOpen, "inventory")){
             drawInventoryUI(g2);
+        }
+        else if (Objects.equals(gp.player.UIOpen, "crafting")){
+            drawCraftingUI(g2);
+        }
+        else if (Objects.equals(gp.player.UIOpen, "box")){
+            drawChestUI(g2);
         }
         else {
             drawGameUI(g2);

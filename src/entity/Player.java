@@ -22,6 +22,9 @@ public class Player extends Entity{
     public int[] inventoryCount;
     public int facingX = 0, facingY = 0, mapX = 0, mapY = 0;
 
+    public String UIOpen = "";
+
+
     public Player(GamePanel gp, KeyHandler keyH) throws IOException {
         super(100);
         this.gp = gp;
@@ -122,9 +125,12 @@ public class Player extends Entity{
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
 
-        int objIndex = gp.collisionChecker.checkObject(this, true);
-        pickUpObject(objIndex);
+        int obj1Index = gp.collisionChecker.checkObject(this, true);
+        int obj2Index = gp.collisionChecker.checkInteraction(this);
+        pickUpObject(obj1Index);
         updateFacing();
+        interact(obj2Index);
+
 
         if (!collisionOn && moving){
             switch (direction){
@@ -200,11 +206,37 @@ public class Player extends Entity{
     }
 
     public void handSecondary(){
-        currentHP -= 10;
+        
     }
 
-    public void interact(){
+    public void interact(int index){
+        if (keyH.inventoryPressed){
+            UIOpen = "inventory";
+        }
+        else if (keyH.utilityPressed){
+            if (index != -1){
+                switch (gp.objects[index].name){
+                    case "Crafting_Desk":
+                        UIOpen = "crafting";
+                        break;
+                    case "Box":
+                        UIOpen = "box";
+                        break;
+                    default:
+                        keyH.utilityPressed = false;
+                        UIOpen = "";
+                        break;
+                }
 
+            }
+            else {
+                UIOpen = "";
+                keyH.utilityPressed = false;
+            }
+        }
+        else {
+            UIOpen = "";
+        }
     }
 
     public void pickUpObject(int index){

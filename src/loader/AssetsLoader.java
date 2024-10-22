@@ -16,7 +16,7 @@ public class AssetsLoader {
 
     String[] tileNames = {"floor", "water", "wall", "grass", "bush"};
     String[] itemNames = {"pickaxe", "coin_item", "rock", "wood", "wall_item", "bush_item"};
-    String[] objectNames = {"box", "coin", "gate"};
+    String[] objectNames = {"box", "coin", "gate", "crafting_desk"};
 
     public AssetsLoader(GamePanel gp) throws IOException {
         this.gp = gp;
@@ -24,7 +24,7 @@ public class AssetsLoader {
         tiles = new BufferedImage[10];
         items = new BufferedImage[10];
         windows = new BufferedImage[5];
-        objects = new BufferedImage[3];
+        objects = new BufferedImage[6];
         try {
             for (int index = 0; index < tileNames.length; index++){
                 tiles[index] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + tileNames[index] + ".png")));
@@ -72,6 +72,7 @@ public class AssetsLoader {
             case "box" -> objects[0];
             case "coin" -> objects[1];
             case "gate" -> objects[2];
+            case "crafting_desk" -> objects[3];
             default -> objects[0];
         };
     }

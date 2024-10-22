@@ -1,7 +1,7 @@
 package main;
 
 import entity.Entity;
-import object.SuperObject;
+import entity.Player;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -10,7 +10,14 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-//    public void checkInteraction()
+    public int checkInteraction(Player player){
+        for (int i = 0; i < gp.objects.length; i++){
+            if (gp.objects[i] != null && gp.objects[i].worldX / gp.tileSize == player.facingX && gp.objects[i].worldY / gp.tileSize == player.facingY){
+                return i;
+            }
+        }
+        return -1;
+    }
 
     public void checkTile(Entity entity){
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
@@ -23,7 +30,7 @@ public class CollisionChecker {
         int entityTopRow = entityTopWorldY/gp.tileSize;
         int entityBottomRow = entityBottomWorldY/gp.tileSize;
 
-        int tileNum1 = 0, tileNum2 = 0;
+        int tileNum1, tileNum2;
 
         switch (entity.direction){
             case "up":
