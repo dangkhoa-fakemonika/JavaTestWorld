@@ -10,8 +10,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class AssetsLoader {
-    public BufferedImage[] tiles, items, windows, objects;
-    public BufferedImage healthBar, healthEffect;
+    BufferedImage[] tiles, items, windows, objects;
+    BufferedImage healthBar, healthEffect;
+    BufferedImage placeHolder;
     GamePanel gp;
 
     String[] tileNames = {"floor", "water", "wall", "grass", "bush"};
@@ -45,6 +46,9 @@ public class AssetsLoader {
                 windows[index] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/ui/" + windowNames[index] + ".png")));
                 windows[index] = tool.scaleImage(windows[index], gp.tileSize* 12, gp.tileSize * 9);
             }
+
+            placeHolder = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/placeholder.png")));
+            placeHolder = tool.scaleImage(placeHolder, gp.tileSize, gp.tileSize);
 
         } catch (IOException e){
             throw new IOException();
@@ -84,10 +88,14 @@ public class AssetsLoader {
         };
     }
 
-    public  BufferedImage getWindow(String windowName){
+    public BufferedImage getWindow(String windowName){
         return switch (windowName){
             case "crafting" -> windows[0];
             default ->  windows[0];
         };
+    }
+
+    public BufferedImage getPlaceHolder(){
+        return placeHolder;
     }
 }

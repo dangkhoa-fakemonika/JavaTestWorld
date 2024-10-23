@@ -2,6 +2,7 @@ package main;
 
 import entity.Player;
 import handlers.KeyHandler;
+import handlers.MotionHandler;
 import handlers.MouseHandler;
 import item.ItemHandler;
 import loader.AssetsLoader;
@@ -30,7 +31,8 @@ public class GamePanel extends JPanel implements Runnable{
     public final int worldHeight = maxWorldRow * tileSize;
 
     public KeyHandler keyH = new KeyHandler();
-    public MouseHandler mouseH = new MouseHandler();
+    public MouseHandler mouseH = new MouseHandler(this);
+    public MotionHandler motionH = new MotionHandler();
     Thread gameThread;
     public Sound sound = new Sound();
     public AssetsLoader assetsLoader = new AssetsLoader(this);
@@ -55,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.addMouseListener(mouseH);
+        this.addMouseMotionListener(motionH);
         this.setFocusable(true);
     }
 

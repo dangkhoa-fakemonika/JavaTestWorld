@@ -25,6 +25,7 @@ public class UserInterface {
     public String message = "";
     int msgCounter = 0;
     UtilityTool tool;
+    ItemDragUI dragUI;
 
 //    boolean openInventory = false;
 //    boolean openInteractiveUI = false;
@@ -35,6 +36,7 @@ public class UserInterface {
         OBJ_Coin coin = new OBJ_Coin(gp);
         coinImage = coin.image;
         tool = new UtilityTool();
+        dragUI = new ItemDragUI(gp);
 
         try{
             healthBar = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/ui/health_bar.png")));
@@ -105,6 +107,43 @@ public class UserInterface {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(30F));
         g2.drawString("Inventory Placeholder", 300, 300);
+
+        dragUI.updateCursor();
+
+        if (gp.motionH.isInCell)
+            if (!gp.mouseH.isPickingUp)
+                dragUI.detectPickUpItem();
+            else
+                dragUI.detectDropItem();
+
+        System.out.println(gp.mouseH.isPickingUp);
+
+        for (int i = 0; i < 16; i++){
+            if (dragUI.slots[i] != null){
+                int itemX = dragUI.slots[i].itemBox.x;
+                int itemY = dragUI.slots[i].itemBox.y;
+                if (dragUI.slots[i].hostItem != null)
+                    g2.drawImage(
+                            dragUI.slots[i].hostItem.image,
+                            itemX,
+                            itemY,
+                            null);
+                if (itemX <= gp.motionH.mouseX && gp.motionH.mouseX <= itemX + gp.tileSize
+                && itemY <= gp.motionH.mouseY && gp.motionH.mouseY <= itemY + gp.tileSize){
+                    g2.setColor(new Color(1f, 1f, 1f, .4f));
+                    g2.fillRect(itemX, itemY, gp.tileSize, gp.tileSize);
+                }
+            }
+            int itemX = gp.motionH.mouseX - gp.tileSize/2;
+            int itemY = gp.motionH.mouseY - gp.tileSize/2;
+
+            if (dragUI.holding != null)
+                g2.drawImage(
+                        dragUI.holding.image,
+                        itemX,
+                        itemY,
+                        null);
+        }
     }
 }
 

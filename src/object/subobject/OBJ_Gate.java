@@ -10,7 +10,7 @@ import java.util.Objects;
 public class OBJ_Gate extends SuperObject {
     public OBJ_Gate(GamePanel gp) throws IOException {
         name = "Gate";
-        image = gp.assetsLoader.objects[2];
+        image = gp.assetsLoader.getObject("gate");
         collision = true;
     }
 }
