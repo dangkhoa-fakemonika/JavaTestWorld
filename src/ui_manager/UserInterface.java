@@ -25,18 +25,46 @@ public class UserInterface {
     public String message = "";
     int msgCounter = 0;
     UtilityTool tool;
-    ItemDragUI dragUI;
+    ItemDragUI inventoryUI, craftingUI;
+    int[][] inventoryLayout, craftingLayout;
+    CraftingDesk craftingDesk;
 
-//    boolean openInventory = false;
-//    boolean openInteractiveUI = false;
-
-    public UserInterface(GamePanel gp) throws IOException, FontFormatException {
+    public UserInterface(GamePanel gp) throws IOException {
         this.gp = gp;
         arial = new Font("Arial", Font.BOLD, 30);
         OBJ_Coin coin = new OBJ_Coin(gp);
         coinImage = coin.image;
         tool = new UtilityTool();
-        dragUI = new ItemDragUI(gp);
+        inventoryLayout = new int[16][3];
+        craftingLayout = new int[16][3];
+
+        for (int i = 0; i < 16; i++){
+            inventoryLayout[i][0] = 200 + (i % 4) * 48;
+            inventoryLayout[i][1] = 200 + (i / 4) * 48;
+            inventoryLayout[i][2] = 1;
+        }
+
+        for (int i = 0; i < 12; i++){
+            craftingLayout[i][0] = 236 + (i % 6) * 48;
+            craftingLayout[i][1] = 360 + (i / 6) * 48;
+            craftingLayout[i][2] = 1;
+        }
+
+        for (int i = 12; i < 15; i++){
+            craftingLayout[i][0] = 196 + (i - 12) * 48;
+            craftingLayout[i][1] = 196;
+            craftingLayout[i][2] = 1;
+        }
+
+        craftingLayout[15][0] = 484;
+        craftingLayout[15][1] = 196;
+        craftingLayout[15][2] = 0;
+
+        inventoryUI = new ItemDragUI(gp, inventoryLayout);
+        craftingUI = new ItemDragUI(gp, craftingLayout);
+
+
+        craftingDesk = new CraftingDesk(gp, craftingUI);
 
         try{
             healthBar = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/ui/health_bar.png")));
@@ -84,13 +112,14 @@ public class UserInterface {
 
         g2.drawImage(healthBar, 10, 10, null);
         g2.setColor(Color.red);
-        g2.fillRect(14, 14, (int)(184 * gp.player.currentHP / gp.player.maxHP) , 24);
+        g2.fillRect(14, 14, 184 * gp.player.currentHP / gp.player.maxHP, 24);
         g2.drawImage(healthTexture, 10, 10, null);
     }
 
     public void drawCraftingUI(Graphics2D g2){
         g2.drawImage(gp.assetsLoader.getWindow("crafting"), 96, 96, null);
-        CraftingDesk craftingDesk = new CraftingDesk(gp);
+        craftingDesk.parseCrafting();
+        craftingUI.loadUI(g2);
     }
 
     public void drawChestUI(Graphics2D g2){
@@ -108,42 +137,7 @@ public class UserInterface {
         g2.setFont(g2.getFont().deriveFont(30F));
         g2.drawString("Inventory Placeholder", 300, 300);
 
-        dragUI.updateCursor();
-
-        if (gp.motionH.isInCell)
-            if (!gp.mouseH.isPickingUp)
-                dragUI.detectPickUpItem();
-            else
-                dragUI.detectDropItem();
-
-        System.out.println(gp.mouseH.isPickingUp);
-
-        for (int i = 0; i < 16; i++){
-            if (dragUI.slots[i] != null){
-                int itemX = dragUI.slots[i].itemBox.x;
-                int itemY = dragUI.slots[i].itemBox.y;
-                if (dragUI.slots[i].hostItem != null)
-                    g2.drawImage(
-                            dragUI.slots[i].hostItem.image,
-                            itemX,
-                            itemY,
-                            null);
-                if (itemX <= gp.motionH.mouseX && gp.motionH.mouseX <= itemX + gp.tileSize
-                && itemY <= gp.motionH.mouseY && gp.motionH.mouseY <= itemY + gp.tileSize){
-                    g2.setColor(new Color(1f, 1f, 1f, .4f));
-                    g2.fillRect(itemX, itemY, gp.tileSize, gp.tileSize);
-                }
-            }
-            int itemX = gp.motionH.mouseX - gp.tileSize/2;
-            int itemY = gp.motionH.mouseY - gp.tileSize/2;
-
-            if (dragUI.holding != null)
-                g2.drawImage(
-                        dragUI.holding.image,
-                        itemX,
-                        itemY,
-                        null);
-        }
+        inventoryUI.loadUI(g2);
     }
 }
 

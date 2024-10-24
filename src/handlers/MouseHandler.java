@@ -18,6 +18,7 @@ public class MouseHandler implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (gp.motionH.isInCell)
             clickAction = true;
+        System.out.println(e.getX() + " " + e.getY());
     }
 
     @Override
