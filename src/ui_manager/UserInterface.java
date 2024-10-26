@@ -77,11 +77,6 @@ public class UserInterface {
 
     }
 
-    public void showMessage(String text){
-        message = text;
-        messageOn = true;
-    }
-
     public void draw(Graphics2D g2){
         switch (gp.player.UIOpen) {
             case "inventory" -> drawInventoryUI(g2);

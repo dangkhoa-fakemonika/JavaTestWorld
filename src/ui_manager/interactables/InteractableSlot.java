@@ -8,7 +8,7 @@ import java.awt.*;
 public class InteractableSlot {
     public Item hostItem;
     public Rectangle itemBox;
-    public boolean isInsertable = true;
+    public boolean isInsertable;
 
     public InteractableSlot(int col, int row, GamePanel gp, boolean isInsertable){
         hostItem = null;
